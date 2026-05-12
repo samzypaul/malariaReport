@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Malaria Report 2025: Global Burden & Emerging Threats</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .chart-container{position:relative;width:100%;max-width:600px;margin-left:auto;margin-right:auto;height:300px;max-height:400px}
+        @media (min-width:768px){.chart-container{height:350px}}
+        body{background-color:#0f172a;color:#f8fafc;font-family:ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+    </style>
+</head>
+<body class="antialiased">
+<!--
+Palette: Vibrant Neon on Dark Slate (Energetic High-Contrast)
+Plan:
+1. Header & Intro
+2. Global Burden (KPIs)
+3. Geographic & Demographic Concentration (Pie/Donut Charts)
+4. Mortality Trends (Bar Chart)
+5. Progress & Innovations (HTML Layout)
+6. Critical Threats (HTML Layout)
+Visualizations:
+- KPI Text: Inform -> Big Numbers for total cases and deaths.
+- Pie Chart: Compare -> Africa vs Global case burden. Uses Chart.js (Canvas).
+- Donut Chart: Compare -> Under-5 mortality in Africa. Uses Chart.js (Canvas).
+- Bar Chart: Change -> 2019 vs 2023 mortality comparison. Uses Chart.js (Canvas).
+- Icons/Graphics: Organize -> Structured HTML/CSS with standard Unicode icons.
+Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in the output.
+-->
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <header class="text-center mb-16">
+        <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500 mb-4">
+            World Malaria Report 2025
+        </h1>
+        <p class="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto">
+            Addressing the Threat of Antimalarial Drug Resistance & Tracking Global Progress
+        </p>
+    </header>
+
+    <section class="mb-16">
+        <div class="bg-slate-800 rounded-2xl shadow-2xl p-8 border border-slate-700">
+            <h2 class="text-3xl font-bold text-white mb-4">The Global Burden</h2>
+            <p class="text-slate-300 text-lg mb-8 leading-relaxed">
+                Despite decades of global health interventions, malaria remains a formidable adversary. In 2023, the disease continued to impact millions across 85 endemic countries. While the peak surges observed during the height of the COVID-19 pandemic have stabilized, the current trajectory is off-track to meet the 2030 Global Technical Strategy targets. The staggering sheer volume of cases and deaths requires immediate, sustained international action.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-slate-900 rounded-xl p-8 border border-slate-700 flex flex-col items-center justify-center text-center transform transition hover:scale-105">
+                    <span class="text-6xl mb-4">🌍</span>
+                    <h3 class="text-slate-400 text-xl font-semibold uppercase tracking-wider mb-2">Estimated Cases (2023)</h3>
+                    <p class="text-6xl font-black text-cyan-400">249M</p>
+                    <p class="text-slate-500 mt-2">Across 85 endemic areas</p>
+                </div>
+                <div class="bg-slate-900 rounded-xl p-8 border border-slate-700 flex flex-col items-center justify-center text-center transform transition hover:scale-105">
+                    <span class="text-6xl mb-4">📉</span>
+                    <h3 class="text-slate-400 text-xl font-semibold uppercase tracking-wider mb-2">Global Deaths (2023)</h3>
+                    <p class="text-6xl font-black text-coral-500 text-red-500">608K</p>
+                    <p class="text-slate-500 mt-2">Remains higher than 2019 levels</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-16">
+        <div class="bg-slate-800 rounded-2xl shadow-2xl p-8 border border-slate-700">
+            <h2 class="text-3xl font-bold text-white mb-4">Disproportionate Impact</h2>
+            <p class="text-slate-300 text-lg mb-8 leading-relaxed">
+                Malaria does not affect the world equally. The WHO African Region bears a vastly disproportionate share of the global burden. The disease ravages populations in sub-Saharan Africa, with the highest concentration of fatalities occurring among the most vulnerable demographic: young children whose immune systems have not yet developed partial resistance to the Plasmodium parasite.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div class="flex flex-col items-center">
+                    <h3 class="text-xl font-bold text-cyan-300 mb-6 text-center">Global Case Distribution</h3>
+                    <div class="chart-container">
+                        <canvas id="burdenChart"></canvas>
+                    </div>
+                    <p class="text-slate-400 mt-6 text-center text-sm px-4">
+                        The WHO African Region accounts for an overwhelming 94% of all global malaria cases, highlighting a massive regional health disparity.
+                    </p>
+                </div>
+                <div class="flex flex-col items-center">
+                    <h3 class="text-xl font-bold text-red-400 mb-6 text-center">Mortality Demographics in Africa</h3>
+                    <div class="chart-container">
+                        <canvas id="demographicsChart"></canvas>
+                    </div>
+                    <p class="text-slate-400 mt-6 text-center text-sm px-4">
+                        Children under the age of 5 represent 76% of all malaria-related deaths within the African Region, marking them as the highest-risk group.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-16">
+        <div class="bg-slate-800 rounded-2xl shadow-2xl p-8 border border-slate-700">
+            <h2 class="text-3xl font-bold text-white mb-4">Mortality: Pandemic Setbacks</h2>
+            <p class="text-slate-300 text-lg mb-8 leading-relaxed">
+                To understand the current crisis, it is crucial to look at recent historical data. Before the COVID-19 pandemic severely disrupted supply chains and healthcare access, global malaria mortality was slowly trending downwards. While the current 2023 figures show a recovery from peak pandemic mortality, we are still losing more lives to malaria today than we were in 2019.
+            </p>
+            <div class="chart-container w-full max-w-3xl mx-auto">
+                <canvas id="mortalityTrendChart"></canvas>
+            </div>
+            <p class="text-slate-400 mt-6 text-center text-sm px-4 max-w-2xl mx-auto">
+                Although down from pandemic peaks, the 2023 mortality estimate of 608,000 remains significantly higher than the 588,000 deaths recorded in 2019, underscoring the urgent need to regain momentum.
+            </p>
+        </div>
+    </section>
+
+    <section class="mb-16">
+        <div class="bg-slate-800 rounded-2xl shadow-2xl p-8 border border-slate-700">
+            <h2 class="text-3xl font-bold text-white mb-4">Glimmers of Hope & Progress</h2>
+            <p class="text-slate-300 text-lg mb-8 leading-relaxed">
+                Amidst the daunting statistics, there are significant public health victories. Concerted national efforts have led to complete elimination in certain regions, and the deployment of new biological tools, such as advanced vaccines, is reshaping the landscape of preventative care in high-burden nations.
+            </p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-6 border border-cyan-900">
+                    <div class="flex items-center mb-4">
+                        <span class="text-4xl mr-4">🏆</span>
+                        <h3 class="text-2xl font-bold text-cyan-400">Elimination Milestones</h3>
+                    </div>
+                    <ul class="space-y-4 text-slate-300">
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-3 text-xl">✓</span>
+                            <span><strong>Tajikistan:</strong> Certified malaria-free in 2023.</span>
+                        </li>
+                        <li class="flex items-center">
+                            <span class="text-green-400 mr-3 text-xl">✓</span>
+                            <span><strong>Timor-Leste:</strong> Achieved certification in early 2025.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="bg-gradient-to-br from-slate-900 to-slate-800 rounded-xl p-6 border border-yellow-900">
+                    <div class="flex items-center mb-4">
+                        <span class="text-4xl mr-4">💉</span>
+                        <h3 class="text-2xl font-bold text-yellow-400">Vaccine Rollout</h3>
+                    </div>
+                    <p class="text-slate-300 mb-4">
+                        Expanded rollout of next-generation vaccines is protecting millions:
+                    </p>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-yellow-900 text-yellow-300 rounded-full text-sm font-semibold">RTS,S/AS01</span>
+                        <span class="px-3 py-1 bg-yellow-900 text-yellow-300 rounded-full text-sm font-semibold">R21/Matrix-M</span>
+                    </div>
+                    <p class="text-slate-400 text-sm mt-4">
+                        Millions of children in high-burden countries have received at least one dose as of late 2024. Preventive services like IPTp and SMC remain high in sub-Saharan Africa.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="mb-8">
+        <div class="bg-slate-800 rounded-2xl shadow-2xl p-8 border border-red-900">
+            <h2 class="text-3xl font-bold text-white mb-4">Critical Challenges & Emerging Risks</h2>
+            <p class="text-slate-300 text-lg mb-8 leading-relaxed">
+                The path to the 2030 Global Technical Strategy targets is obstructed by severe, emerging threats. Biological evolution of the parasite and the mosquito vector, compounded by environmental instability, are eroding the efficacy of our most reliable medical interventions.
+            </p>
+
+            <div class="space-y-6">
+                <div class="bg-slate-900 p-6 rounded-xl border-l-4 border-red-500">
+                    <div class="flex items-start">
+                        <span class="text-4xl mr-4 mt-1">💊</span>
+                        <div>
+                            <h3 class="text-xl font-bold text-red-400 mb-2">Antimalarial Drug Resistance</h3>
+                            <p class="text-slate-300">
+                                The primary theme of the 2025 report. There is alarming evidence of <em>Plasmodium falciparum</em> mutations reducing the efficacy of Artemisinin-based Combination Therapies (ACTs). Originally confined to the Greater Mekong Subregion, these mutations are now appearing in parts of East and West Africa.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-6 rounded-xl border-l-4 border-blue-500">
+                    <div class="flex items-start">
+                        <span class="text-4xl mr-4 mt-1">🌪️</span>
+                        <div>
+                            <h3 class="text-xl font-bold text-blue-400 mb-2">Climate Change & Extreme Weather</h3>
+                            <p class="text-slate-300">
+                                Extreme weather events disrupt habitats and human populations. Severe flooding in Pakistan and cyclones in Southeast Africa have directly caused massive surges in localized malaria cases by creating vast new breeding grounds for mosquitoes and displacing vulnerable communities.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-900 p-6 rounded-xl border-l-4 border-orange-500">
+                    <div class="flex items-start">
+                        <span class="text-4xl mr-4 mt-1">🦟</span>
+                        <div>
+                            <h3 class="text-xl font-bold text-orange-400 mb-2">Invasive Vector Species</h3>
+                            <p class="text-slate-300">
+                                The rapid spread of <em>Anopheles stephensi</em> into urban environments across Africa presents a dire challenge. Unlike rural vectors, this species thrives in cities and demonstrates high resistance to many commonly used insecticidal interventions.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<script>
+    const wrapLabelText = (label) => {
+        if (label.length <= 16) return label;
+        const words = label.split(' ');
+        const lines = [];
+        let currentLine = '';
+        for (let i = 0; i < words.length; i++) {
+            if ((currentLine + words[i]).length > 16) {
+                if (currentLine.length > 0) lines.push(currentLine.trim());
+                currentLine = words[i] + ' ';
+            } else {
+                currentLine += words[i] + ' ';
+            }
+        }
+        if (currentLine.trim().length > 0) lines.push(currentLine.trim());
+        return lines;
+    };
+
+    const commonTooltipConfig = {
+        callbacks: {
+            title: function(tooltipItems) {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                } else {
+                    return label;
+                }
+            }
+        }
+    };
+
+    const burdenCtx = document.getElementById('burdenChart').getContext('2d');
+    new Chart(burdenCtx, {
+        type: 'pie',
+        data: {
+            labels: [wrapLabelText('WHO African Region'), wrapLabelText('Rest of the World')],
+            datasets: [{
+                data: [94, 6],
+                backgroundColor: ['#06b6d4', '#334155'],
+                borderColor: '#0f172a',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'bottom', labels: { color: '#f8fafc' } },
+                tooltip: commonTooltipConfig
+            }
+        }
+    });
+
+    const demoCtx = document.getElementById('demographicsChart').getContext('2d');
+    new Chart(demoCtx, {
+        type: 'doughnut',
+        data: {
+            labels: [wrapLabelText('Children Under 5 Years Old'), wrapLabelText('Other Demographics')],
+            datasets: [{
+                data: [76, 24],
+                backgroundColor: ['#ef4444', '#334155'],
+                borderColor: '#0f172a',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '60%',
+            plugins: {
+                legend: { position: 'bottom', labels: { color: '#f8fafc' } },
+                tooltip: commonTooltipConfig
+            }
+        }
+    });
+
+    const trendCtx = document.getElementById('mortalityTrendChart').getContext('2d');
+    new Chart(trendCtx, {
+        type: 'bar',
+        data: {
+            labels: [wrapLabelText('Pre-Pandemic Baseline (2019)'), wrapLabelText('Current Estimate (2023)')],
+            datasets: [{
+                label: 'Global Malaria Deaths (Thousands)',
+                data: [588, 608],
+                backgroundColor: ['#eab308', '#ef4444'],
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    grid: { color: '#334155' },
+                    ticks: { color: '#94a3b8' }
+                },
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#f8fafc' }
+                }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: commonTooltipConfig
+            }
+        }
+    });
+</script>
+</body>
+</html>
